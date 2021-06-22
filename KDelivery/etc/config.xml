@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <kdelivery>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Kirill\KDelivery\Model\Carrier\Delivery</model>
+                <name>KDelivery</name>
+                <price>10.00</price>
+                <rate>10</rate>
+                <title>KDelivery</title>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+                <handling_type>F</handling_type>
+            </kdelivery>
+        </carriers>
+    </default>
+</config>
