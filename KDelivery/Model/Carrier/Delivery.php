@@ -64,7 +64,7 @@ class Delivery extends \Magento\Shipping\Model\Carrier\AbstractCarrier implement
      * @return float
      */
 
-    private function getShippingDiscounte($price, $rate){
+    private function getShippingDiscount($price, $rate){
         $total = null;
         $country =  $this->session->getQuote()->getShippingAddress()->getCountryId();
 
@@ -82,7 +82,7 @@ class Delivery extends \Magento\Shipping\Model\Carrier\AbstractCarrier implement
         $configPrice = $this->getConfigData('price');
         $configRate = $this->getConfigData('rate');
 
-        $totalWithSale = $this->getShippingDiscounte($configPrice , $configRate);
+        $totalWithSale = $this->getShippingDiscount($configPrice , $configRate);
 
         $shippingPrice = $this->getFinalPriceWithHandlingFee($totalWithSale ?? $configPrice);
 
