@@ -64,27 +64,26 @@ class Delivery extends \Magento\Shipping\Model\Carrier\AbstractCarrier implement
      * @return float
      */
 
-    private function getShippingDiscount($price, $rate){
+    private function getShippingDiscount($price){
         $total = null;
+        $rate = $this->getConfigData('rate');
         $country =  $this->session->getQuote()->getShippingAddress()->getCountryId();
 
-       if($country == 'US'){
-           $total = ($price * $rate)* (50 / 100);
-       }elseif($country == 'UA'){
-           $totalDiscounte = ($price * $rate) * (10 / 100);
-           $total = ($price * $rate) - $totalDiscounte;
-       }
+        $countryDiscount = ['US'=>50,'UA'=>10];
+
+        if(isset($countryDiscount[$country])){
+            $totalDiscount = ($price * $rate) * ($countryDiscount[$country] / 100);
+            $total = ($price * $rate) - $totalDiscount;
+        }
+
        return $total;
     }
 
     private function getShippingPrice()
     {
         $configPrice = $this->getConfigData('price');
-        $configRate = $this->getConfigData('rate');
-
-        $totalWithSale = $this->getShippingDiscount($configPrice , $configRate);
-
-        $shippingPrice = $this->getFinalPriceWithHandlingFee($totalWithSale ?? $configPrice);
+        $totalWithDiscount = $this->getShippingDiscount($configPrice);
+        $shippingPrice = $this->getFinalPriceWithHandlingFee($totalWithDiscount ?? $configPrice);
 
         return $shippingPrice;
     }
@@ -98,8 +97,6 @@ class Delivery extends \Magento\Shipping\Model\Carrier\AbstractCarrier implement
         if (!$this->getConfigFlag('active')) {
             return false;
         }
-
-
 
         /** @var \Magento\Shipping\Model\Rate\Result $result */
         $result = $this->_rateResultFactory->create();
